@@ -38,7 +38,3 @@ xxx = do
    modifyResponse $ addHeader "Content-Type" "application/json; charset=UTF-8"
    modifyResponse $ addHeader "Server" "One"
    writeBS "{\"message\":\"hello world\",\"message1\":\"What's up world?\"}"
-   r <- fmap rspStatusReason getResponse
-   writeBS r
-   req <- fmap rqServerName getRequest
-   writeBS req
