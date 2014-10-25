@@ -5,10 +5,11 @@ import           Control.Applicative
 import           Snap.Core
 import           Snap.Util.FileServe
 import           Snap.Http.Server
+import           Control.Monad.IO.Class
 
 main :: IO ()
 main = do
-    httpServe (setPort 8002 config) site
+    httpServe (setPort 8003 config) site
         where
          config =
              setErrorLog  ConfigNoLog $
@@ -35,6 +36,10 @@ echoHandler = do
 
 xxx :: Snap ()
 xxx = do
-   modifyResponse $ addHeader "Content-Type" "application/json; charset=UTF-8"
-   modifyResponse $ addHeader "Server" "One"
-   writeBS "{\"message\":\"hello world\",\"message1\":\"What's up world?\"}"
+   req <- getRequest
+   let a = getHeader "user-agent" req
+   told <- maybe pass return a
+   writeBS told
+--   modifyResponse $ addHeader "Content-Type" "application/json; charset=UTF-8"
+--   modifyResponse $ addHeader "Server" "One"
+--   writeBS "{\"message\":\"hello world\",\"message1\":\"What's up world?\"}"
